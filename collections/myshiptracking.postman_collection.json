@@ -1,0 +1,124 @@
+{
+  "info": {
+    "name": "MyShipTracking API",
+    "description": "Real-time terrestrial-AIS maritime data over REST. Base URL: https://api.myshiptracking.com/api/v2. Authenticate with an API key via Authorization: Bearer YOUR_API_KEY or the x-api-key header. Calls are credit-metered (simple 1, extended 3, history/port-calls 5 per distinct date; capped at 500 per request; no charge on empty results). Confirmed endpoints only; Fleet, Port Search, and Vessels In Port endpoints exist but are not included here.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{apiKey}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://api.myshiptracking.com/api/v2", "type": "string" },
+    { "key": "apiKey", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Vessels",
+      "item": [
+        {
+          "name": "Vessel Status (single)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/vessel?mmsi=&response=simple", "host": ["{{baseUrl}}"], "path": ["vessel"], "query": [{ "key": "mmsi", "value": "", "description": "9-digit MMSI (or use imo)" }, { "key": "imo", "value": "", "disabled": true }, { "key": "response", "value": "simple", "description": "simple or extended" }] },
+            "description": "Latest AIS position and voyage details for a single vessel. Exactly one of mmsi or imo. Simple 1 credit / extended 3 credits."
+          }
+        },
+        {
+          "name": "Vessels Status (bulk) [modeled path]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/vessel/bulk?mmsi=&response=simple", "host": ["{{baseUrl}}"], "path": ["vessel", "bulk"], "query": [{ "key": "mmsi", "value": "", "description": "Comma-separated MMSIs (modeled)" }, { "key": "response", "value": "simple" }] },
+            "description": "Status for multiple vessels in one request. Path and parameters are modeled from the Bulk Vessel Retrieval docs; verify against live documentation."
+          }
+        },
+        {
+          "name": "Vessels In Zone",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/vessel/zone?minlon=&maxlon=&minlat=&maxlat=&response=simple&minutesBack=60", "host": ["{{baseUrl}}"], "path": ["vessel", "zone"], "query": [{ "key": "minlon", "value": "" }, { "key": "maxlon", "value": "" }, { "key": "minlat", "value": "" }, { "key": "maxlat", "value": "" }, { "key": "response", "value": "simple" }, { "key": "minutesBack", "value": "60" }] },
+            "description": "Vessels within a bounding box. 1 credit per vessel (simple) / 3 (extended)."
+          }
+        },
+        {
+          "name": "Vessels Nearby",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/vessel/nearby?mmsi=&radius=20&response=simple", "host": ["{{baseUrl}}"], "path": ["vessel", "nearby"], "query": [{ "key": "mmsi", "value": "", "description": "Reference vessel MMSI" }, { "key": "radius", "value": "20", "description": "Nautical miles (1-100)" }, { "key": "response", "value": "simple" }] },
+            "description": "Vessels within a radius of a reference vessel. Reference position must be < 6 hours old. Up to 500 records."
+          }
+        },
+        {
+          "name": "Vessel History Track",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/vessel/track?mmsi=&days=1&timegroup=1", "host": ["{{baseUrl}}"], "path": ["vessel", "track"], "query": [{ "key": "mmsi", "value": "", "description": "MMSI (or imo)" }, { "key": "days", "value": "1", "description": "Lookback days (or use fromdate/todate)" }, { "key": "fromdate", "value": "", "disabled": true }, { "key": "todate", "value": "", "disabled": true }, { "key": "timegroup", "value": "1", "description": "Minutes 1-60" }] },
+            "description": "Historical positions over a date range or days. 5 credits per distinct date. Max 90-day range."
+          }
+        },
+        {
+          "name": "Vessel Search",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/vessel/search?name=", "host": ["{{baseUrl}}"], "path": ["vessel", "search"], "query": [{ "key": "name", "value": "", "description": "Name, minimum 3 characters" }] },
+            "description": "Search vessels by name. Up to 40 records. 1 credit per request."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ports",
+      "item": [
+        {
+          "name": "Port Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/port?port_id=", "host": ["{{baseUrl}}"], "path": ["port"], "query": [{ "key": "port_id", "value": "", "description": "Port id (or use unloco)" }, { "key": "unloco", "value": "", "disabled": true }] },
+            "description": "Details for a specific port. Exactly one of port_id or unloco. 1 credit."
+          }
+        },
+        {
+          "name": "Port Estimate (ETA)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/port/estimate?port_id=", "host": ["{{baseUrl}}"], "path": ["port", "estimate"], "query": [{ "key": "port_id", "value": "", "description": "Port id (or use unloco)" }, { "key": "unloco", "value": "", "disabled": true }] },
+            "description": "Estimated arrivals for vessels heading to a port, with eta_utc and eta_local. 1 credit per record."
+          }
+        },
+        {
+          "name": "Port Calls",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/port/calls?type=0&port_id=&days=1", "host": ["{{baseUrl}}"], "path": ["port", "calls"], "query": [{ "key": "type", "value": "0", "description": "0 all, 1 arrivals, 2 departures" }, { "key": "port_id", "value": "", "description": "Port id (or unloco)" }, { "key": "unloco", "value": "", "disabled": true }, { "key": "mmsi", "value": "", "disabled": true }, { "key": "days", "value": "1", "description": "Lookback days (or fromdate/todate)" }, { "key": "fromdate", "value": "", "disabled": true }, { "key": "todate", "value": "", "disabled": true }] },
+            "description": "Historical arrivals and departures for a port or vessel. 5 credits per distinct date."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Account",
+      "item": [
+        {
+          "name": "Account Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/account/info", "host": ["{{baseUrl}}"], "path": ["account", "info"] },
+            "description": "Account details and credit balance. No credits charged."
+          }
+        }
+      ]
+    }
+  ]
+}

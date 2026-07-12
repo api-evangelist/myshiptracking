@@ -1,0 +1,155 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "MyShipTracking API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{apiKey}}"
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Vessels", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Vessel Status (single)", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/vessel",
+            "params": [
+              { "name": "mmsi", "value": "", "type": "query", "description": "9-digit MMSI (or use imo)" },
+              { "name": "imo", "value": "", "type": "query", "description": "7-digit IMO (or use mmsi)" },
+              { "name": "response", "value": "simple", "type": "query", "description": "simple or extended" }
+            ]
+          },
+          "docs": "Latest AIS position and voyage details for a single vessel. Exactly one of mmsi or imo. Simple 1 credit / extended 3 credits."
+        },
+        {
+          "info": { "name": "Vessels Status (bulk) [modeled path]", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/vessel/bulk",
+            "params": [
+              { "name": "mmsi", "value": "", "type": "query", "description": "Comma-separated MMSIs (modeled)" },
+              { "name": "response", "value": "simple", "type": "query" }
+            ]
+          },
+          "docs": "Status for multiple vessels in one request. Path and parameters modeled from the Bulk Vessel Retrieval docs; verify against live documentation."
+        },
+        {
+          "info": { "name": "Vessels In Zone", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/vessel/zone",
+            "params": [
+              { "name": "minlon", "value": "", "type": "query", "description": "Minimum longitude" },
+              { "name": "maxlon", "value": "", "type": "query", "description": "Maximum longitude" },
+              { "name": "minlat", "value": "", "type": "query", "description": "Minimum latitude" },
+              { "name": "maxlat", "value": "", "type": "query", "description": "Maximum latitude" },
+              { "name": "response", "value": "simple", "type": "query" },
+              { "name": "minutesBack", "value": "60", "type": "query", "description": "Max position age in minutes" }
+            ]
+          },
+          "docs": "Vessels within a bounding box. 1 credit per vessel (simple) / 3 (extended)."
+        },
+        {
+          "info": { "name": "Vessels Nearby", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/vessel/nearby",
+            "params": [
+              { "name": "mmsi", "value": "", "type": "query", "description": "Reference vessel MMSI" },
+              { "name": "radius", "value": "20", "type": "query", "description": "Nautical miles (1-100)" },
+              { "name": "response", "value": "simple", "type": "query" }
+            ]
+          },
+          "docs": "Vessels within a radius of a reference vessel. Reference position must be < 6 hours old. Up to 500 records."
+        },
+        {
+          "info": { "name": "Vessel History Track", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/vessel/track",
+            "params": [
+              { "name": "mmsi", "value": "", "type": "query", "description": "MMSI (or imo)" },
+              { "name": "days", "value": "1", "type": "query", "description": "Lookback days (or fromdate/todate)" },
+              { "name": "timegroup", "value": "1", "type": "query", "description": "Minutes 1-60" }
+            ]
+          },
+          "docs": "Historical positions over a date range or days. 5 credits per distinct date. Max 90-day range."
+        },
+        {
+          "info": { "name": "Vessel Search", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/vessel/search",
+            "params": [
+              { "name": "name", "value": "", "type": "query", "description": "Name, minimum 3 characters" }
+            ]
+          },
+          "docs": "Search vessels by name. Up to 40 records. 1 credit per request."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Ports", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Port Details", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/port",
+            "params": [
+              { "name": "port_id", "value": "", "type": "query", "description": "Port id (or unloco)" },
+              { "name": "unloco", "value": "", "type": "query", "description": "UN/LOCODE (or port_id)" }
+            ]
+          },
+          "docs": "Details for a specific port. Exactly one of port_id or unloco. 1 credit."
+        },
+        {
+          "info": { "name": "Port Estimate (ETA)", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/port/estimate",
+            "params": [
+              { "name": "port_id", "value": "", "type": "query", "description": "Port id (or unloco)" },
+              { "name": "unloco", "value": "", "type": "query", "description": "UN/LOCODE (or port_id)" }
+            ]
+          },
+          "docs": "Estimated arrivals for vessels heading to a port, with eta_utc and eta_local. 1 credit per record."
+        },
+        {
+          "info": { "name": "Port Calls", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/port/calls",
+            "params": [
+              { "name": "type", "value": "0", "type": "query", "description": "0 all, 1 arrivals, 2 departures" },
+              { "name": "port_id", "value": "", "type": "query", "description": "Port id (or unloco)" },
+              { "name": "unloco", "value": "", "type": "query", "description": "UN/LOCODE (or port_id)" },
+              { "name": "mmsi", "value": "", "type": "query", "description": "Vessel MMSI" },
+              { "name": "days", "value": "1", "type": "query", "description": "Lookback days (or fromdate/todate)" }
+            ]
+          },
+          "docs": "Historical arrivals and departures for a port or vessel. 5 credits per distinct date."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Account", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Account Info", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/account/info"
+          },
+          "docs": "Account details and credit balance. No credits charged."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: MyShipTracking
+providerId: myshiptracking
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Vessel Tracking
+- AIS
+- Maritime
+- Real-Time Data
+- Plans
+description: >-
+  MyShipTracking sells API access as a credit-metered service. A single free
+  trial key (2,000 coins, max 10 days active, 90 calls/minute) lets you evaluate
+  coverage. Production access is offered as monthly subscription plans that each
+  grant a fixed monthly credit allowance - Basic (50,000 credits), Standard
+  (200,000 credits), and Unlimited - or, per the Account endpoint, as a
+  pay-per-use "Coin Charge" balance. Subscription credits are issued monthly and
+  expire at the end of the billing period; they are non-transferable and do not
+  roll over. Every call deducts credits based on the endpoint and response
+  detail, and no single request is ever charged more than 500 credits. Prices are
+  shown in EUR and exclude VAT.
+notes: >-
+  Prices captured from https://api.myshiptracking.com/api-pricing on 2026-07-12
+  (monthly, VAT excluded). An annual toggle exists on the pricing page but annual
+  rates were not captured. The Unlimited plan offers optional dedicated VM + IP
+  access on request at extra cost. Verify current rates and any per-endpoint
+  entitlements during reconciliation.
+sources:
+- https://api.myshiptracking.com/api-pricing
+- https://api.myshiptracking.com/
+- https://api.myshiptracking.com/docs/account-info
+plans:
+- id: myshiptracking-trial
+  name: Free Trial
+  type: free
+  description: >-
+    One trial API key per user for evaluation. Limited to 2,000 coins and a
+    maximum active period of 10 days, capped at 90 calls per minute. Access to
+    all endpoints; some endpoints impose trial-only result limits (e.g. history
+    track max 100 records over the last 20 days).
+  entries:
+  - label: Trial Coins
+    name: trial_coins
+    type: usage
+    metric: credits
+    limit: 2000
+    timeFrame: lifetime
+    geo: global
+    unit: 1
+    price: free
+    userMultiplied: false
+  elements:
+  - name: Access to All Endpoints
+  - name: 90 Calls per Minute
+  - name: Overuse Protection
+- id: myshiptracking-basic
+  name: Basic
+  type: subscription
+  description: >-
+    Ideal for startups and small projects. 50,000 API credits per month with
+    access to all endpoints and basic support.
+  entries:
+  - label: Monthly Subscription
+    name: basic_monthly
+    type: flat
+    metric: subscription
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: EUR 90 / month (excl. VAT)
+    userMultiplied: false
+  - label: Included Credits
+    name: basic_credits
+    type: usage
+    metric: credits
+    limit: 50000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included in subscription
+    userMultiplied: false
+  elements:
+  - name: 50,000 API Credits
+  - name: Access to All Endpoints
+  - name: Basic Support
+  - name: Overuse Protection
+- id: myshiptracking-standard
+  name: Standard
+  type: subscription
+  description: >-
+    Optimal for growing businesses. 200,000 API credits per month with priority
+    support and high-priority request handling.
+  entries:
+  - label: Monthly Subscription
+    name: standard_monthly
+    type: flat
+    metric: subscription
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: EUR 185 / month (excl. VAT)
+    userMultiplied: false
+  - label: Included Credits
+    name: standard_credits
+    type: usage
+    metric: credits
+    limit: 200000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included in subscription
+    userMultiplied: false
+  elements:
+  - name: 200,000 API Credits
+  - name: Access to All Endpoints
+  - name: Priority Support
+  - name: High Priority Requests
+  - name: Overuse Protection
+- id: myshiptracking-unlimited
+  name: Unlimited
+  type: subscription
+  description: >-
+    For enterprises needing unrestricted access. Unlimited API credits with
+    priority support and high-priority requests. Dedicated VM + IP access for
+    low latency and ultra-high performance is available on request at extra cost.
+  entries:
+  - label: Monthly Subscription
+    name: unlimited_monthly
+    type: flat
+    metric: subscription
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: EUR 350 / month (excl. VAT)
+    userMultiplied: false
+  - label: Included Credits
+    name: unlimited_credits
+    type: usage
+    metric: credits
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: unlimited (included in subscription)
+    userMultiplied: false
+  elements:
+  - name: Unlimited API Credits
+  - name: Access to All Endpoints
+  - name: Priority Support
+  - name: High Priority Requests
+  - name: Overuse Protection
+  - name: Dedicated VM + IP (on request, extra cost)
+- id: myshiptracking-coin-charge
+  name: Coin Charge (Pay-Per-Use)
+  type: usage
+  description: >-
+    Pay-per-use account model referenced by the Account Info endpoint
+    (account_type "Coin Charge"). Coins are purchased and drawn down per call by
+    endpoint and response detail, rather than a fixed monthly allowance. Coin
+    package prices are not published on the API pricing page and are not modeled
+    here.
+  entries:
+  - label: Coin Balance
+    name: coin_balance
+    type: usage
+    metric: credits
+    limit: -1
+    timeFrame: ongoing
+    geo: global
+    unit: 1
+    price: pay-per-use (coin package pricing not published)
+    userMultiplied: false
+  elements:
+  - name: Access to All Endpoints
+  - name: Overuse Protection
+creditCosts:
+- endpoint: Vessel Status / Vessels In Zone / Vessels Nearby (simple)
+  cost: 1 credit per vessel
+- endpoint: Vessel Status / Vessels In Zone / Vessels Nearby (extended)
+  cost: 3 credits per vessel
+- endpoint: Vessel Search
+  cost: 1 credit per request
+- endpoint: Vessel History Track
+  cost: 5 credits per distinct date
+- endpoint: Port Details
+  cost: 1 credit per request
+- endpoint: Port Estimate (ETA)
+  cost: 1 credit per record
+- endpoint: Port Calls
+  cost: 5 credits per distinct date
+- endpoint: Account Info
+  cost: free
+- rule: Per-request cap
+  cost: never more than 500 credits per single request
+- rule: Empty results
+  cost: no charge when a request returns no results
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

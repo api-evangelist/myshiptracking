@@ -1,0 +1,122 @@
+aid: myshiptracking
+name: MyShipTracking
+review:
+  question: Does MyShipTracking expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-12'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. MyShipTracking's documented public API is
+    entirely request/response REST over HTTPS (base
+    https://api.myshiptracking.com/api/v2), returning a JSON or XML envelope.
+    There is no documented server-push transport - no WebSocket (wss://), no
+    Server-Sent Events, and no webhook - on MyShipTracking's own API to model.
+    "Real-time" here means the freshest terrestrial-AIS position available at the
+    moment of a REST call, delivered as a normal HTTP response, not a live stream.
+findings:
+  summary: |
+    MyShipTracking does NOT publish a documented public WebSocket API. The
+    product is a terrestrial-AIS vessel-tracking platform whose developer API is
+    a credit-metered REST API at https://api.myshiptracking.com/api/v2. Every
+    documented endpoint is an HTTPS GET returning a standardized envelope
+    (status, duration, timestamp, data) in JSON (default) or XML. Authentication
+    is an API key passed as `Authorization: Bearer YOUR_API_KEY` or the
+    `x-api-key` header. No realtime, bidirectional, or streaming WebSocket
+    (ws:// or wss://) endpoint - and no SSE or webhook callback - is documented
+    anywhere in the MyShipTracking API reference, getting-started guide, or
+    pricing pages as of the review date. Live AIS streaming over WebSockets is a
+    feature of some competing platforms (e.g. aisstream.io), but MyShipTracking
+    is not one of them.
+  accessModel: |
+    Paid and credit-metered. One free trial key per user (2,000 coins, max 10
+    days active, 90 calls/minute). Production access is either a monthly
+    subscription with a fixed monthly credit allowance (Basic 50k credits,
+    Standard 200k credits, Unlimited) or a pay-per-use "Coin Charge" balance.
+    Credits deduct per call by endpoint and response detail; unused subscription
+    credits do not roll over. Coverage is terrestrial AIS only (nearshore).
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.myshiptracking.com/api/v2
+      documented: true
+      note: All documented endpoints are HTTPS GET requests returning a JSON/XML envelope.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in MyShipTracking's API reference, getting-started guide, or pricing pages as of the review date.
+    - protocol: SSE
+      scheme: https
+      documented: false
+      note: No Server-Sent Events streaming is documented.
+    - protocol: Webhook
+      scheme: https
+      documented: false
+      note: No webhook / server-to-endpoint callback is documented on MyShipTracking's own API.
+  endpointsConfirmedRest:
+    - GET https://api.myshiptracking.com/api/v2/vessel
+    - GET https://api.myshiptracking.com/api/v2/vessel/zone
+    - GET https://api.myshiptracking.com/api/v2/vessel/nearby
+    - GET https://api.myshiptracking.com/api/v2/vessel/track
+    - GET https://api.myshiptracking.com/api/v2/vessel/search
+    - GET https://api.myshiptracking.com/api/v2/port
+    - GET https://api.myshiptracking.com/api/v2/port/estimate
+    - GET https://api.myshiptracking.com/api/v2/port/calls
+    - GET https://api.myshiptracking.com/api/v2/account/info
+  endpointsModeledOrUnverifiedPath:
+    - GET https://api.myshiptracking.com/api/v2/vessel/bulk
+    - GET https://api.myshiptracking.com/api/v2/port/search
+    - GET https://api.myshiptracking.com/api/v2/port/in-port (Vessels In Port)
+    - Fleets endpoints (My Fleets, New/Edit/Delete Fleet, Add/Delete/List Vessel in Fleet, Fleet Status)
+  modeledNote: |
+    Paths under endpointsConfirmedRest were read directly from each endpoint's
+    own documentation page and reflect confirmed method + path + parameters.
+    The "bulk" vessel endpoint, port search, vessels-in-port, and the eight
+    Fleet endpoints are documented as existing in the API navigation, but their
+    exact URL paths and parameter sets were not individually confirmed page by
+    page; the /vessel/bulk path shown is inferred and should be verified against
+    the Bulk Vessel Retrieval doc. Response schemas in the OpenAPI are modeled
+    from the documented field lists; field-by-field types beyond what the docs
+    state are best-effort and marked accordingly.
+sources:
+  - url: https://api.myshiptracking.com/
+    type: Documentation
+    note: API overview, getting started, auth (Bearer / x-api-key), rate limits, error codes. All REST; no WebSocket mentioned.
+  - url: https://api.myshiptracking.com/docs/vessel-current-position-api
+    type: APIReference
+    note: GET /api/v2/vessel; mmsi|imo; simple(1)/extended(3) credits.
+  - url: https://api.myshiptracking.com/docs/vessels-in-zone
+    type: APIReference
+    note: GET /api/v2/vessel/zone; bounding box; 1/3 credits per vessel.
+  - url: https://api.myshiptracking.com/docs/vessels-nearby
+    type: APIReference
+    note: GET /api/v2/vessel/nearby; radius in NM; 1/3 credits per vessel.
+  - url: https://api.myshiptracking.com/docs/vessel-historical-track-api
+    type: APIReference
+    note: GET /api/v2/vessel/track; date range/days + timegroup; 5 credits per distinct date.
+  - url: https://api.myshiptracking.com/docs/vessel-search
+    type: APIReference
+    note: GET /api/v2/vessel/search; name >= 3 chars; 1 credit.
+  - url: https://api.myshiptracking.com/docs/port-details
+    type: APIReference
+    note: GET /api/v2/port; port_id|unloco; 1 credit.
+  - url: https://api.myshiptracking.com/docs/port-estimate-arrivals
+    type: APIReference
+    note: GET /api/v2/port/estimate; eta_utc/eta_local; 1 credit per record.
+  - url: https://api.myshiptracking.com/docs/port-calls
+    type: APIReference
+    note: GET /api/v2/port/calls; arrivals/departures; 5 credits per distinct date.
+  - url: https://api.myshiptracking.com/docs/account-info
+    type: APIReference
+    note: GET /api/v2/account/info; account_type Coin Charge or Subscription; available_coins; free.
+  - url: https://api.myshiptracking.com/api-pricing
+    type: Pricing
+    note: Basic EUR90/50k credits, Standard EUR185/200k credits, Unlimited EUR350; monthly.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. MyShipTracking's own public API is
+    request/response REST over HTTPS, returning a JSON/XML envelope. No AsyncAPI
+    document was created because there is no server-push transport (WebSocket,
+    SSE, or webhook) on MyShipTracking's own API to model.

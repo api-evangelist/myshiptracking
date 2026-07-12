@@ -1,0 +1,184 @@
+aid: myshiptracking
+url: https://raw.githubusercontent.com/api-evangelist/myshiptracking/refs/heads/main/apis.yml
+name: MyShipTracking
+kind: company
+description: MyShipTracking is a real-time terrestrial AIS vessel-tracking platform.
+  Its REST API delivers live vessel positions, voyage and static particulars, vessels
+  within a geographic zone or near a reference ship, historical tracks, port details,
+  port calls, estimated arrivals, and fleet management - all returned in a standardized
+  JSON or XML envelope. Access is credit-metered under monthly subscription plans or
+  a pay-per-use coin model, authenticated with an API key over Bearer or x-api-key.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Vessel Tracking
+- AIS
+- Maritime
+- Ship Tracking
+- Real-Time Data
+- Ships
+- Port Calls
+- Maritime Data
+- Location
+- Fleet Tracking
+created: '2026-07-12'
+modified: '2026-07-12'
+specificationVersion: '0.19'
+apis:
+- aid: myshiptracking:myshiptracking-vessel-position-api
+  name: MyShipTracking Vessel Position API
+  tags:
+  - Vessel Position
+  - AIS
+  - Real-Time Data
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://api.myshiptracking.com/docs/vessel-current-position-api
+  baseURL: https://api.myshiptracking.com/api/v2
+  properties:
+  - url: https://api.myshiptracking.com/docs/vessel-current-position-api
+    type: Documentation
+  - url: https://api.myshiptracking.com/docs/vessels-current-position-api
+    type: APIReference
+  - url: openapi/myshiptracking-openapi.yml
+    type: OpenAPI
+  - url: collections/myshiptracking.postman_collection.json
+    type: PostmanCollection
+  - url: collections/myshiptracking.opencollection.json
+    type: OpenCollection
+  description: Retrieve the latest AIS position and voyage details for a specific vessel
+    by MMSI or IMO (GET /vessel), or for many vessels in one request (GET /vessel/bulk).
+    Simple responses return position, course, speed, and navigation status; extended
+    responses add static particulars and voyage data.
+- aid: myshiptracking:myshiptracking-vessels-in-area-api
+  name: MyShipTracking Vessels in Area API
+  tags:
+  - Vessels In Zone
+  - Bounding Box
+  - Nearby
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://api.myshiptracking.com/docs/vessels-in-zone
+  baseURL: https://api.myshiptracking.com/api/v2
+  properties:
+  - url: https://api.myshiptracking.com/docs/vessels-in-zone
+    type: Documentation
+  - url: https://api.myshiptracking.com/docs/vessels-nearby
+    type: APIReference
+  - url: openapi/myshiptracking-openapi.yml
+    type: OpenAPI
+  - url: collections/myshiptracking.postman_collection.json
+    type: PostmanCollection
+  - url: collections/myshiptracking.opencollection.json
+    type: OpenCollection
+  description: List vessels inside a geographic bounding box (GET /vessel/zone with
+    minlon/maxlon/minlat/maxlat) or within a nautical-mile radius of a reference vessel
+    (GET /vessel/nearby). Credits are charged per vessel returned, one for simple and
+    three for extended responses.
+- aid: myshiptracking:myshiptracking-vessel-search-api
+  name: MyShipTracking Vessel Search API
+  tags:
+  - Vessel Search
+  - Lookup
+  - Ships
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://api.myshiptracking.com/docs/vessel-search
+  baseURL: https://api.myshiptracking.com/api/v2
+  properties:
+  - url: https://api.myshiptracking.com/docs/vessel-search
+    type: Documentation
+  - url: openapi/myshiptracking-openapi.yml
+    type: OpenAPI
+  - url: collections/myshiptracking.postman_collection.json
+    type: PostmanCollection
+  - url: collections/myshiptracking.opencollection.json
+    type: OpenCollection
+  description: Search for vessels by name (GET /vessel/search, minimum three characters,
+    up to 40 records). Returns vessel name, MMSI, IMO, type code and label, flag, and
+    last-detected area. One credit per request.
+- aid: myshiptracking:myshiptracking-vessel-particulars-api
+  name: MyShipTracking Vessel Particulars API
+  tags:
+  - Vessel Particulars
+  - Static Data
+  - History Track
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://api.myshiptracking.com/docs/vessel-current-position-api
+  baseURL: https://api.myshiptracking.com/api/v2
+  properties:
+  - url: https://api.myshiptracking.com/docs/vessel-current-position-api
+    type: Documentation
+  - url: https://api.myshiptracking.com/docs/vessel-historical-track-api
+    type: APIReference
+  - url: openapi/myshiptracking-openapi.yml
+    type: OpenAPI
+  - url: collections/myshiptracking.postman_collection.json
+    type: PostmanCollection
+  - url: collections/myshiptracking.opencollection.json
+    type: OpenCollection
+  description: Static vessel particulars - callsign, vessel type, AIS type, dimensions,
+    draught, flag, gross tonnage, deadweight, and year built - are returned by the
+    extended response of the Vessel Status endpoint. Historical movement is available
+    via GET /vessel/track over a date range with configurable time grouping.
+- aid: myshiptracking:myshiptracking-port-calls-api
+  name: MyShipTracking Port Calls API
+  tags:
+  - Port Calls
+  - Arrivals
+  - Departures
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://api.myshiptracking.com/docs/port-calls
+  baseURL: https://api.myshiptracking.com/api/v2
+  properties:
+  - url: https://api.myshiptracking.com/docs/port-calls
+    type: Documentation
+  - url: https://api.myshiptracking.com/docs/port-details
+    type: APIReference
+  - url: openapi/myshiptracking-openapi.yml
+    type: OpenAPI
+  - url: collections/myshiptracking.postman_collection.json
+    type: PostmanCollection
+  - url: collections/myshiptracking.opencollection.json
+    type: OpenCollection
+  description: Retrieve historical port call events - arrivals and departures - for
+    a port (by port_id or UN/LOCODE) or a vessel (by MMSI) over a lookback window or
+    date range (GET /port/calls). Port metadata is available via GET /port. Charged
+    five credits per distinct date in the returned records.
+- aid: myshiptracking:myshiptracking-eta-api
+  name: MyShipTracking ETA API
+  tags:
+  - ETA
+  - Expected Arrivals
+  - Port Estimate
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://api.myshiptracking.com/docs/port-estimate-arrivals
+  baseURL: https://api.myshiptracking.com/api/v2
+  properties:
+  - url: https://api.myshiptracking.com/docs/port-estimate-arrivals
+    type: Documentation
+  - url: openapi/myshiptracking-openapi.yml
+    type: OpenAPI
+  - url: collections/myshiptracking.postman_collection.json
+    type: PostmanCollection
+  - url: collections/myshiptracking.opencollection.json
+    type: OpenCollection
+  description: Obtain estimated arrival times for vessels heading to a given port (GET
+    /port/estimate by port_id or UN/LOCODE). Each record includes vessel identity and
+    particulars plus eta_utc and eta_local. One credit per record returned.
+common:
+- type: DomainSecurity
+  url: security/myshiptracking-domain-security.yml
+- type: Authentication
+  url: authentication/myshiptracking-authentication.yml
+- type: Website
+  url: https://www.myshiptracking.com
+- type: Documentation
+  url: https://api.myshiptracking.com/
+- type: Plans
+  url: plans/myshiptracking-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/myshiptracking-rate-limits.yml
+- type: FinOps
+  url: finops/myshiptracking-finops.yml
+- type: LinkedIn
+  url: https://www.linkedin.com/company/myshiptracking
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

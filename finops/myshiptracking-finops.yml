@@ -1,0 +1,95 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: MyShipTracking
+providerId: myshiptracking
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Vessel Tracking
+- AIS
+- Maritime
+- Real-Time Data
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of MyShipTracking API spend. Cost is driven by a credit meter:
+  every successful call deducts credits by endpoint and response detail (1 for
+  simple, 3 for extended, 5 per distinct date for history and port calls; no
+  charge on empty results), capped at 500 credits per request. Credits come
+  either from a monthly subscription allowance (Basic 50,000 / Standard 200,000 /
+  Unlimited) billed in EUR, or from a pay-per-use "Coin Charge" balance.
+  Subscription credits expire at the end of each billing period and do not roll
+  over, so the primary optimization levers are choosing simple over extended
+  responses, narrowing bounding boxes and date ranges, and right-sizing the plan
+  to actual monthly credit burn.
+notes: >-
+  Subscription list prices captured 2026-07-12 (EUR, excl. VAT): Basic EUR 90,
+  Standard EUR 185, Unlimited EUR 350 per month. Coin-package unit prices for the
+  pay-per-use model are not published and are not reconciled here.
+sources:
+- https://api.myshiptracking.com/api-pricing
+- https://api.myshiptracking.com/
+- https://api.myshiptracking.com/docs/account-info
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: MyShipTracking
+serviceCategory: Maritime and Location Data
+billingModel:
+  pricingCategory: Subscription and Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: EUR
+  chargeCategories:
+  - Usage
+  - Purchase
+focusColumns:
+  ServiceName: MyShipTracking API
+  ServiceCategory: Maritime and Location Data
+  ProviderName: MyShipTracking
+  PublisherName: MyShipTracking
+  InvoiceIssuerName: MyShipTracking
+  BillingCurrency: EUR
+  ChargeCategory: Usage
+  PricingCategory: Subscription and Usage-Based
+meters:
+- name: api_credits
+  description: Credits deducted per call by endpoint and response detail (simple 1, extended 3, history/port-calls 5 per distinct date).
+  unit: credits
+  aggregation: sum
+  dimensions:
+  - account
+  - endpoint
+  - response_detail
+- name: vessels_returned
+  description: Per-vessel credit charges on zone and nearby queries scale with the number of vessels returned.
+  unit: records
+  aggregation: sum
+  dimensions:
+  - account
+  - endpoint
+- name: distinct_dates
+  description: History track and port-call queries are billed 5 credits per distinct date in the result set.
+  unit: dates
+  aggregation: sum
+  dimensions:
+  - account
+  - endpoint
+principles:
+- name: Visibility
+  description: Track credit burn by endpoint and response detail via the Account Info endpoint (available_coins); watch monthly allowance depletion.
+- name: Allocation
+  description: Attribute credit spend to workloads by endpoint and response detail so extended/history-heavy consumers are identified.
+- name: Optimization
+  description: Prefer simple over extended responses, tighten bounding boxes and lookback windows, batch vessel lookups, and right-size the subscription tier to actual monthly credit usage since credits do not roll over.
+- name: Accountability
+  description: Assign an owner to the subscription; review monthly credit consumption against the plan allowance and against the 500-credit per-request cap.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

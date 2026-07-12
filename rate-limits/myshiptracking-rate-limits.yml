@@ -1,0 +1,69 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: MyShipTracking
+providerId: myshiptracking
+created: '2026-07-12'
+modified: '2026-07-12'
+reconciled: false
+tags:
+- Vessel Tracking
+- AIS
+- Maritime
+- Rate Limiting
+- Quotas
+description: >-
+  MyShipTracking combines a per-minute call-rate limit with a credit-based
+  quota. Accounts with a valid (paid) API key may make up to 2,000 calls per
+  minute; trial keys are limited to 90 calls per minute. Independently of the
+  call rate, every request deducts credits by endpoint and response detail
+  against your plan's monthly allowance or coin balance. Overuse protection
+  guarantees you are never charged more than 500 credits for a single request,
+  and never more than your available balance.
+notes: >-
+  Values captured from the Getting Started "Rate Limits, Credits & Overuse
+  Protection" section on 2026-07-12. The credit costs referenced here are
+  detailed per endpoint in plans/myshiptracking-plans-pricing.yml. Verify current
+  limits during reconciliation.
+sources:
+- https://api.myshiptracking.com/
+- https://api.myshiptracking.com/api-pricing
+responseCodes:
+  validationError: 400
+  authError: 401
+limits:
+- name: Valid API Key Call Rate
+  scope: account
+  metric: requests
+  limit: 2000 per minute
+  notes: Applies to accounts with a valid (paid) API key.
+- name: Trial Call Rate
+  scope: account
+  metric: requests
+  limit: 90 per minute
+  notes: Applies to trial API keys.
+- name: Trial Coin Allowance
+  scope: account
+  metric: credits
+  limit: 2000 total (max 10 days active)
+  notes: One trial key per user; expires after 10 days.
+- name: Monthly Credit Allowance
+  scope: account
+  metric: credits
+  limit: per plan (Basic 50,000 / Standard 200,000 / Unlimited unlimited)
+  notes: Subscription credits issued monthly; do not roll over.
+- name: Per-Request Credit Cap
+  scope: request
+  metric: credits
+  limit: 500
+  notes: A single request is never charged more than 500 credits regardless of computed cost.
+policies:
+- name: Overuse Protection
+  description: The system guarantees you are never charged more than your available coin balance, and never more than 500 credits per request.
+- name: No Charge on Empty
+  description: Requests that return no results are not charged.
+- name: Credit Expiry
+  description: Subscription credits are issued per billing period and expire at period end; they are non-transferable and do not accumulate.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
