@@ -163,6 +163,8 @@ apis:
     /port/estimate by port_id or UN/LOCODE). Each record includes vessel identity and
     particulars plus eta_utc and eta_local. One credit per record returned.
 common:
+- type: AgenticAccess
+  url: agentic-access/myshiptracking-agentic-access.yml
 - type: DomainSecurity
   url: security/myshiptracking-domain-security.yml
 - type: Authentication
