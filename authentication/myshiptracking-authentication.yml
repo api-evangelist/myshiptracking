@@ -11,7 +11,7 @@ schemes:
   scheme: bearer
   description: >-
     API key issued from your MyShipTracking account page, passed as
-    `Authorization: Bearer YOUR_API_KEY`. Register a free account at
+    `Authorization: Bearer [example key]`. Register a free account at
     MyShipTracking.com, then generate your API Key and Secret Key on the account
     page. Each user may hold one trial key (2,000 coins, 10 days).
   in: header
