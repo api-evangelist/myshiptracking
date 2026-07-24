@@ -1,0 +1,457 @@
+openapi: 3.0.3
+info:
+  title: MyShipTracking Account Vessels API
+  description: 'The MyShipTracking API delivers real-time terrestrial-AIS maritime data over REST. It exposes live vessel positions and voyage data, static vessel particulars, vessels within a geographic zone or near a reference ship, historical tracks, port details, port calls, and estimated arrivals, plus fleet management. Every response is returned in a standardized envelope (status, duration, timestamp, and either data on success or code/message on error), in JSON by default or XML via the Accept header.
+
+
+    Authentication: pass your API key as either `Authorization: Bearer YOUR_API_KEY` or the `x-api-key` header on every request.
+
+
+    Billing: calls are metered in credits. Simple responses cost 1 credit, extended responses 3 credits, and history/port-call queries 5 credits per distinct date. No credits are charged when a request returns no results, and a single request is capped at 500 credits.
+
+
+    Scope note: the paths and parameters below for /vessel, /vessel/zone, /vessel/nearby, /vessel/track, /vessel/search, /port, /port/estimate, /port/calls, and /account/info were confirmed from MyShipTracking''s own per-endpoint documentation. The /vessel/bulk path is inferred from the Bulk Vessel Retrieval documentation and should be verified. Response schemas are modeled from the documented field lists; additional Fleet, Port Search, and Vessels In Port endpoints exist in the API but are not modeled here.'
+  version: '2.0'
+  contact:
+    name: MyShipTracking
+    url: https://www.myshiptracking.com
+  termsOfService: https://api.myshiptracking.com/docs/terms
+servers:
+- url: https://api.myshiptracking.com/api/v2
+  description: MyShipTracking API v2
+security:
+- bearerAuth: []
+- apiKeyAuth: []
+tags:
+- name: Vessels
+  description: Vessel positions, particulars, history, and search.
+paths:
+  /vessel:
+    get:
+      operationId: getVesselStatus
+      tags:
+      - Vessels
+      summary: Vessel status (single)
+      description: Retrieve the latest AIS position and voyage details for a single vessel. Exactly one of mmsi or imo is required. Simple response costs 1 credit; extended costs 3 credits.
+      parameters:
+      - name: mmsi
+        in: query
+        required: false
+        description: 9-digit Maritime Mobile Service Identity. Provide exactly one of mmsi or imo.
+        schema:
+          type: integer
+      - name: imo
+        in: query
+        required: false
+        description: 7-digit International Maritime Organization number. Provide exactly one of mmsi or imo.
+        schema:
+          type: integer
+      - name: response
+        in: query
+        required: false
+        description: Response detail level.
+        schema:
+          type: string
+          enum:
+          - simple
+          - extended
+          default: simple
+      responses:
+        '200':
+          description: Vessel status envelope.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VesselEnvelope'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /vessel/bulk:
+    get:
+      operationId: getVesselsBulk
+      tags:
+      - Vessels
+      summary: Vessels status (bulk)
+      description: Retrieve status for multiple vessels in a single request. NOTE - path and parameters are modeled from the Bulk Vessel Retrieval documentation and should be verified against the live docs.
+      parameters:
+      - name: mmsi
+        in: query
+        required: false
+        description: Comma-separated list of MMSI identifiers (modeled).
+        schema:
+          type: string
+      - name: response
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - simple
+          - extended
+          default: simple
+      responses:
+        '200':
+          description: Bulk vessel status envelope.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VesselListEnvelope'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /vessel/zone:
+    get:
+      operationId: getVesselsInZone
+      tags:
+      - Vessels
+      summary: Vessels in zone (bounding box)
+      description: List vessels within a geographic bounding box. Charged 1 credit per vessel (simple) or 3 credits per vessel (extended).
+      parameters:
+      - name: minlon
+        in: query
+        required: true
+        description: Minimum longitude in decimal degrees.
+        schema:
+          type: number
+      - name: maxlon
+        in: query
+        required: true
+        description: Maximum longitude in decimal degrees.
+        schema:
+          type: number
+      - name: minlat
+        in: query
+        required: true
+        description: Minimum latitude in decimal degrees.
+        schema:
+          type: number
+      - name: maxlat
+        in: query
+        required: true
+        description: Maximum latitude in decimal degrees.
+        schema:
+          type: number
+      - name: response
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - simple
+          - extended
+          default: simple
+      - name: minutesBack
+        in: query
+        required: false
+        description: Maximum age of a vessel position in minutes.
+        schema:
+          type: integer
+          default: 60
+      responses:
+        '200':
+          description: List of vessels in the zone.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VesselListEnvelope'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /vessel/nearby:
+    get:
+      operationId: getVesselsNearby
+      tags:
+      - Vessels
+      summary: Vessels nearby
+      description: List vessels within a nautical-mile radius of a reference vessel. The reference vessel's latest position must be no older than 6 hours. Up to 500 records. Charged 1 credit per vessel (simple) or 3 (extended).
+      parameters:
+      - name: mmsi
+        in: query
+        required: true
+        description: 9-digit MMSI of the reference vessel.
+        schema:
+          type: integer
+      - name: radius
+        in: query
+        required: false
+        description: Search radius in nautical miles (1-100).
+        schema:
+          type: number
+          default: 20
+      - name: response
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - simple
+          - extended
+          default: simple
+      responses:
+        '200':
+          description: List of nearby vessels.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VesselListEnvelope'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /vessel/track:
+    get:
+      operationId: getVesselTrack
+      tags:
+      - Vessels
+      summary: Vessel history track
+      description: Retrieve historical position records for a vessel over a date range or a lookback in days, with optional time grouping. Charged 5 credits per distinct date returned. Max 90-day range; data available up to 2 years back.
+      parameters:
+      - name: mmsi
+        in: query
+        required: false
+        description: 9-digit MMSI. Provide exactly one of mmsi or imo.
+        schema:
+          type: integer
+      - name: imo
+        in: query
+        required: false
+        description: 7-digit IMO. Provide exactly one of mmsi or imo.
+        schema:
+          type: integer
+      - name: fromdate
+        in: query
+        required: false
+        description: Start datetime in UTC (ISO 8601). Use with todate, or use days instead.
+        schema:
+          type: string
+          format: date-time
+      - name: todate
+        in: query
+        required: false
+        description: End datetime in UTC (ISO 8601). Use with fromdate, or use days instead.
+        schema:
+          type: string
+          format: date-time
+      - name: days
+        in: query
+        required: false
+        description: Number of days to look back. Use instead of fromdate/todate.
+        schema:
+          type: integer
+      - name: timegroup
+        in: query
+        required: false
+        description: Time aggregation in minutes (1-60).
+        schema:
+          type: integer
+          default: 1
+      responses:
+        '200':
+          description: Historical track points.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackEnvelope'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /vessel/search:
+    get:
+      operationId: searchVessels
+      tags:
+      - Vessels
+      summary: Vessel search by name
+      description: Search for vessels by name (minimum 3 characters). Returns up to 40 records. 1 credit per request.
+      parameters:
+      - name: name
+        in: query
+        required: true
+        description: Search term for vessel names (minimum 3 characters).
+        schema:
+          type: string
+          minLength: 3
+      responses:
+        '200':
+          description: Matching vessels.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VesselSearchEnvelope'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    TrackEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/TrackPoint'
+    VesselSearchResult:
+      type: object
+      properties:
+        vessel_name:
+          type: string
+        mmsi:
+          type: integer
+        imo:
+          type: integer
+        vtype:
+          type: integer
+        vessel_type:
+          type: string
+        flag:
+          type: string
+        area:
+          type: string
+    VesselSearchEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            type: array
+            maxItems: 40
+            items:
+              $ref: '#/components/schemas/VesselSearchResult'
+    ErrorEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          code:
+            type: string
+            example: MST_ERR_VALIDATOR
+          message:
+            type: string
+    EnvelopeMeta:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        duration:
+          type: string
+          description: Processing time.
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 server timestamp.
+    VesselExtended:
+      description: Extended vessel record adds static particulars, voyage, and weather fields to the simple record. Field list is modeled from the documented extended response.
+      allOf:
+      - $ref: '#/components/schemas/VesselSimple'
+      - type: object
+        properties:
+          callsign:
+            type: string
+          vessel_type:
+            type: string
+          ais_type:
+            type: string
+          size_a:
+            type: number
+          size_b:
+            type: number
+          size_c:
+            type: number
+          size_d:
+            type: number
+          draught:
+            type: number
+          flag:
+            type: string
+          gt:
+            type: integer
+          dwt:
+            type: integer
+          built:
+            type: integer
+          destination:
+            type: string
+          eta:
+            type: string
+            format: date-time
+    VesselListEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/VesselExtended'
+    VesselEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/VesselExtended'
+    TrackPoint:
+      type: object
+      properties:
+        lat:
+          type: number
+        lng:
+          type: number
+        course:
+          type: number
+        speed:
+          type: number
+        time:
+          type: string
+          format: date-time
+    VesselSimple:
+      type: object
+      description: Simple vessel record.
+      properties:
+        vessel_name:
+          type: string
+        mmsi:
+          type: integer
+        imo:
+          type: integer
+        vtype:
+          type: integer
+        lat:
+          type: number
+        lng:
+          type: number
+        course:
+          type: number
+        speed:
+          type: number
+        nav_status:
+          type: string
+        received:
+          type: string
+          format: date-time
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    BadRequest:
+      description: Parameter validation failed or an invalid identifier was supplied.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'API key passed as: Authorization: Bearer YOUR_API_KEY.'
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: API key passed in the x-api-key header.

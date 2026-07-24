@@ -1,0 +1,110 @@
+openapi: 3.0.3
+info:
+  title: MyShipTracking Account API
+  description: 'The MyShipTracking API delivers real-time terrestrial-AIS maritime data over REST. It exposes live vessel positions and voyage data, static vessel particulars, vessels within a geographic zone or near a reference ship, historical tracks, port details, port calls, and estimated arrivals, plus fleet management. Every response is returned in a standardized envelope (status, duration, timestamp, and either data on success or code/message on error), in JSON by default or XML via the Accept header.
+
+
+    Authentication: pass your API key as either `Authorization: Bearer YOUR_API_KEY` or the `x-api-key` header on every request.
+
+
+    Billing: calls are metered in credits. Simple responses cost 1 credit, extended responses 3 credits, and history/port-call queries 5 credits per distinct date. No credits are charged when a request returns no results, and a single request is capped at 500 credits.
+
+
+    Scope note: the paths and parameters below for /vessel, /vessel/zone, /vessel/nearby, /vessel/track, /vessel/search, /port, /port/estimate, /port/calls, and /account/info were confirmed from MyShipTracking''s own per-endpoint documentation. The /vessel/bulk path is inferred from the Bulk Vessel Retrieval documentation and should be verified. Response schemas are modeled from the documented field lists; additional Fleet, Port Search, and Vessels In Port endpoints exist in the API but are not modeled here.'
+  version: '2.0'
+  contact:
+    name: MyShipTracking
+    url: https://www.myshiptracking.com
+  termsOfService: https://api.myshiptracking.com/docs/terms
+servers:
+- url: https://api.myshiptracking.com/api/v2
+  description: MyShipTracking API v2
+security:
+- bearerAuth: []
+- apiKeyAuth: []
+tags:
+- name: Account
+  description: Account details and credit balance.
+paths:
+  /account/info:
+    get:
+      operationId: getAccountInfo
+      tags:
+      - Account
+      summary: Account info
+      description: Retrieve account details and credit balance. No credits are charged for this endpoint.
+      responses:
+        '200':
+          description: Account info envelope.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountEnvelope'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+  schemas:
+    ErrorEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          code:
+            type: string
+            example: MST_ERR_VALIDATOR
+          message:
+            type: string
+    EnvelopeMeta:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        duration:
+          type: string
+          description: Processing time.
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 server timestamp.
+    AccountEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/Account'
+    Account:
+      type: object
+      properties:
+        account_type:
+          type: string
+          description: Coin Charge (pay-per-use) or Subscription (recurring plan).
+        created:
+          type: string
+          format: date-time
+        available_coins:
+          type: integer
+        expire_date:
+          type: string
+          format: date-time
+          nullable: true
+        is_trial:
+          type: boolean
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'API key passed as: Authorization: Bearer YOUR_API_KEY.'
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: API key passed in the x-api-key header.
