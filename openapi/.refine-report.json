@@ -1,0 +1,18 @@
+{
+  "provider": "myshiptracking",
+  "sources": [
+    "myshiptracking-account-api-openapi.yml",
+    "myshiptracking-ports-api-openapi.yml",
+    "myshiptracking-vessels-api-openapi.yml"
+  ],
+  "outputs": [
+    "myshiptracking-account-api-openapi.yml",
+    "myshiptracking-ports-api-openapi.yml",
+    "myshiptracking-vessels-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
