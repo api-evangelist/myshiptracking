@@ -1,0 +1,165 @@
+{
+  "item": [
+    {
+      "id": "c036581b-753b-4368-a0a9-4a89b4a8f144",
+      "name": "Account",
+      "description": {
+        "content": "Account details and credit balance.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "db5907c0-5b94-4ace-b156-e4f7ba4cec7c",
+          "name": "Account info",
+          "request": {
+            "name": "Account info",
+            "description": {
+              "content": "Retrieve account details and credit balance. No credits are charged for this endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "account",
+                "info"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d5c7580f-dac0-4298-87eb-3b60c5884f5a",
+              "name": "Account info envelope.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "info"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"duration\": \"string\",\n  \"timestamp\": \"2003-01-08T19:41:25.134Z\",\n  \"data\": {\n    \"account_type\": \"string\",\n    \"created\": \"2021-09-26T17:03:06.946Z\",\n    \"available_coins\": 7248,\n    \"expire_date\": \"2007-03-31T07:26:32.479Z\",\n    \"is_trial\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "56874dd4-a229-48e8-8080-8bd2067fff1f",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "info"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"duration\": \"string\",\n  \"timestamp\": \"2001-11-16T22:24:28.322Z\",\n  \"code\": \"MST_ERR_VALIDATOR\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.myshiptracking.com/api/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "af51fc0a-4261-400f-98ad-d2379e32f89b",
+    "name": "MyShipTracking Account API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The MyShipTracking API delivers real-time terrestrial-AIS maritime data over REST. It exposes live vessel positions and voyage data, static vessel particulars, vessels within a geographic zone or near a reference ship, historical tracks, port details, port calls, and estimated arrivals, plus fleet management. Every response is returned in a standardized envelope (status, duration, timestamp, and either data on success or code/message on error), in JSON by default or XML via the Accept header.\n\nAuthentication: pass your API key as either `Authorization: Bearer YOUR_API_KEY` or the `x-api-key` header on every request.\n\nBilling: calls are metered in credits. Simple responses cost 1 credit, extended responses 3 credits, and history/port-call queries 5 credits per distinct date. No credits are charged when a request returns no results, and a single request is capped at 500 credits.\n\nScope note: the paths and parameters below for /vessel, /vessel/zone, /vessel/nearby, /vessel/track, /vessel/search, /port, /port/estimate, /port/calls, and /account/info were confirmed from MyShipTracking's own per-endpoint documentation. The /vessel/bulk path is inferred from the Bulk Vessel Retrieval documentation and should be verified. Response schemas are modeled from the documented field lists; additional Fleet, Port Search, and Vessels In Port endpoints exist in the API but are not modeled here.\n\nContact Support:\n Name: MyShipTracking",
+      "type": "text/plain"
+    }
+  }
+}

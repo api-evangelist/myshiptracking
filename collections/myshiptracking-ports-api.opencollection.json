@@ -1,0 +1,129 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "MyShipTracking Account Ports API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Ports",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Port details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/port",
+            "params": [
+              {
+                "name": "port_id",
+                "value": "",
+                "type": "query",
+                "description": "Unique port identifier. Provide exactly one of port_id or unloco."
+              },
+              {
+                "name": "unloco",
+                "value": "",
+                "type": "query",
+                "description": "UN/LOCODE of the port. Provide exactly one of port_id or unloco."
+              }
+            ]
+          },
+          "docs": "Retrieve details for a specific port. Provide exactly one of port_id or unloco. 1 credit per request."
+        },
+        {
+          "info": {
+            "name": "Port estimated arrivals (ETA)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/port/estimate",
+            "params": [
+              {
+                "name": "port_id",
+                "value": "",
+                "type": "query",
+                "description": "Port identifier. Provide exactly one of port_id or unloco."
+              },
+              {
+                "name": "unloco",
+                "value": "",
+                "type": "query",
+                "description": "Port UN/LOCODE. Provide exactly one of port_id or unloco."
+              }
+            ]
+          },
+          "docs": "Obtain estimated arrival times for vessels heading to a given port. Provide exactly one of port_id or unloco. 1 credit per record returned."
+        },
+        {
+          "info": {
+            "name": "Port calls (arrivals and departures)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/port/calls",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter: 0 all, 1 arrivals, 2 departures."
+              },
+              {
+                "name": "port_id",
+                "value": "",
+                "type": "query",
+                "description": "Port identifier (mutually exclusive with unloco)."
+              },
+              {
+                "name": "unloco",
+                "value": "",
+                "type": "query",
+                "description": "Port UN/LOCODE (mutually exclusive with port_id)."
+              },
+              {
+                "name": "mmsi",
+                "value": "",
+                "type": "query",
+                "description": "9-digit vessel identifier."
+              },
+              {
+                "name": "days",
+                "value": "",
+                "type": "query",
+                "description": "Lookback period in days. Provide either days OR fromdate/todate."
+              },
+              {
+                "name": "fromdate",
+                "value": "",
+                "type": "query",
+                "description": "Start datetime in UTC (ISO 8601)."
+              },
+              {
+                "name": "todate",
+                "value": "",
+                "type": "query",
+                "description": "End datetime in UTC (ISO 8601)."
+              }
+            ]
+          },
+          "docs": "Retrieve historical port call events. Supply at least one of mmsi, or port_id/unloco, and either days or a fromdate/todate range (not both). Charged 5 credits per distinct date in the returned records."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

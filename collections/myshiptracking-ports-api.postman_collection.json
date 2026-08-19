@@ -1,0 +1,751 @@
+{
+  "item": [
+    {
+      "id": "77b1b11c-280f-4b42-87f5-d87134c054b1",
+      "name": "Ports",
+      "description": {
+        "content": "Port details, port calls, and arrival estimates.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3beb890e-a04f-4570-915f-0cc3d0236683",
+          "name": "Port details",
+          "request": {
+            "name": "Port details",
+            "description": {
+              "content": "Retrieve details for a specific port. Provide exactly one of port_id or unloco. 1 credit per request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "port"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "port_id",
+                  "value": "<integer>",
+                  "description": "Unique port identifier. Provide exactly one of port_id or unloco."
+                },
+                {
+                  "disabled": false,
+                  "key": "unloco",
+                  "value": "<string>",
+                  "description": "UN/LOCODE of the port. Provide exactly one of port_id or unloco."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f03d6560-8505-44ac-b960-5d2b0db61622",
+              "name": "Port details envelope.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "port"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "port_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "unloco",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"duration\": \"string\",\n  \"timestamp\": \"1948-09-30T22:19:24.356Z\",\n  \"data\": {\n    \"port_id\": 7334,\n    \"name\": \"string\",\n    \"unloco\": \"string\",\n    \"port_type\": \"string\",\n    \"country\": \"string\",\n    \"timezone\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "74f02760-d67e-45ea-84e7-ce8b4549bdae",
+              "name": "Parameter validation failed or an invalid identifier was supplied.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "port"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "port_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "unloco",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"duration\": \"string\",\n  \"timestamp\": \"1954-12-16T04:26:38.090Z\",\n  \"code\": \"MST_ERR_VALIDATOR\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b54d7c69-7cc5-4905-8a5f-8fdfcb7ec5a0",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "port"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "port_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "unloco",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"duration\": \"string\",\n  \"timestamp\": \"1954-12-16T04:26:38.090Z\",\n  \"code\": \"MST_ERR_VALIDATOR\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8e2f3d04-338d-435d-870d-e8badde20bb7",
+          "name": "Port estimated arrivals (ETA)",
+          "request": {
+            "name": "Port estimated arrivals (ETA)",
+            "description": {
+              "content": "Obtain estimated arrival times for vessels heading to a given port. Provide exactly one of port_id or unloco. 1 credit per record returned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "port",
+                "estimate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "port_id",
+                  "value": "<integer>",
+                  "description": "Port identifier. Provide exactly one of port_id or unloco."
+                },
+                {
+                  "disabled": false,
+                  "key": "unloco",
+                  "value": "<string>",
+                  "description": "Port UN/LOCODE. Provide exactly one of port_id or unloco."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ba9642b4-a058-4781-8dc8-ecf27df700f3",
+              "name": "Estimated arrivals.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "port",
+                    "estimate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "port_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "unloco",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"duration\": \"string\",\n  \"timestamp\": \"1967-11-22T20:11:50.220Z\",\n  \"data\": [\n    {\n      \"mmsi\": 8614,\n      \"imo\": 444,\n      \"vessel_name\": \"string\",\n      \"vtype\": 8047,\n      \"vessel_type\": \"string\",\n      \"flag\": \"string\",\n      \"gt\": 1098,\n      \"dwt\": 9216,\n      \"built\": 4985,\n      \"length\": 2824,\n      \"width\": 293,\n      \"eta_utc\": \"2012-02-16T09:26:01.901Z\",\n      \"eta_local\": \"1997-09-15T18:55:28.004Z\"\n    },\n    {\n      \"mmsi\": 8440,\n      \"imo\": 112,\n      \"vessel_name\": \"string\",\n      \"vtype\": 4320,\n      \"vessel_type\": \"string\",\n      \"flag\": \"string\",\n      \"gt\": 3665,\n      \"dwt\": 7412,\n      \"built\": 2923,\n      \"length\": 2808,\n      \"width\": 6023,\n      \"eta_utc\": \"2002-11-04T07:04:25.531Z\",\n      \"eta_local\": \"2019-07-11T18:00:28.868Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ae91e33b-e6c7-4b31-be7c-6fdefc719273",
+              "name": "Parameter validation failed or an invalid identifier was supplied.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "port",
+                    "estimate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "port_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "unloco",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"duration\": \"string\",\n  \"timestamp\": \"1954-12-16T04:26:38.090Z\",\n  \"code\": \"MST_ERR_VALIDATOR\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ac8903a0-95c8-42c5-b537-4f2edb306d72",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "port",
+                    "estimate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "port_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "unloco",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"duration\": \"string\",\n  \"timestamp\": \"1954-12-16T04:26:38.090Z\",\n  \"code\": \"MST_ERR_VALIDATOR\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6541a780-f65b-4828-90fa-5acda731f7d9",
+          "name": "Port calls (arrivals and departures)",
+          "request": {
+            "name": "Port calls (arrivals and departures)",
+            "description": {
+              "content": "Retrieve historical port call events. Supply at least one of mmsi, or port_id/unloco, and either days or a fromdate/todate range (not both). Charged 5 credits per distinct date in the returned records.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "port",
+                "calls"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "0",
+                  "description": "Filter: 0 all, 1 arrivals, 2 departures."
+                },
+                {
+                  "disabled": false,
+                  "key": "port_id",
+                  "value": "<integer>",
+                  "description": "Port identifier (mutually exclusive with unloco)."
+                },
+                {
+                  "disabled": false,
+                  "key": "unloco",
+                  "value": "<string>",
+                  "description": "Port UN/LOCODE (mutually exclusive with port_id)."
+                },
+                {
+                  "disabled": false,
+                  "key": "mmsi",
+                  "value": "<integer>",
+                  "description": "9-digit vessel identifier."
+                },
+                {
+                  "disabled": false,
+                  "key": "days",
+                  "value": "<integer>",
+                  "description": "Lookback period in days. Provide either days OR fromdate/todate."
+                },
+                {
+                  "disabled": false,
+                  "key": "fromdate",
+                  "value": "<dateTime>",
+                  "description": "Start datetime in UTC (ISO 8601)."
+                },
+                {
+                  "disabled": false,
+                  "key": "todate",
+                  "value": "<dateTime>",
+                  "description": "End datetime in UTC (ISO 8601)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "54c8ed05-5108-4433-9185-b9114aa11cf7",
+              "name": "Port call events.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "port",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "0"
+                    },
+                    {
+                      "key": "port_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "unloco",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mmsi",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "days",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "fromdate",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "todate",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"duration\": \"string\",\n  \"timestamp\": \"1963-08-24T21:56:33.550Z\",\n  \"data\": [\n    {\n      \"event\": \"DEPARTURE\",\n      \"time_utc\": \"1987-06-24T08:36:04.203Z\",\n      \"time_local\": \"2020-08-01T11:42:41.201Z\",\n      \"mmsi\": 739,\n      \"imo\": 1389,\n      \"vessel_name\": \"string\",\n      \"port_id\": 6516,\n      \"port_name\": \"string\",\n      \"unloco\": \"string\"\n    },\n    {\n      \"event\": \"DEPARTURE\",\n      \"time_utc\": \"1993-04-13T00:36:16.394Z\",\n      \"time_local\": \"1983-06-11T23:59:03.721Z\",\n      \"mmsi\": 6738,\n      \"imo\": 9417,\n      \"vessel_name\": \"string\",\n      \"port_id\": 2054,\n      \"port_name\": \"string\",\n      \"unloco\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7df4487a-40db-47db-87d9-ac1c0e2c7abd",
+              "name": "Parameter validation failed or an invalid identifier was supplied.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "port",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "0"
+                    },
+                    {
+                      "key": "port_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "unloco",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mmsi",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "days",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "fromdate",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "todate",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"duration\": \"string\",\n  \"timestamp\": \"1954-12-16T04:26:38.090Z\",\n  \"code\": \"MST_ERR_VALIDATOR\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1be020cd-51db-4bf5-9856-67e6c6dc0afe",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "port",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "0"
+                    },
+                    {
+                      "key": "port_id",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "unloco",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mmsi",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "days",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "fromdate",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "todate",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"duration\": \"string\",\n  \"timestamp\": \"1954-12-16T04:26:38.090Z\",\n  \"code\": \"MST_ERR_VALIDATOR\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.myshiptracking.com/api/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "97d698fb-888d-43eb-af9e-736762b1b3f2",
+    "name": "MyShipTracking Account Ports API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The MyShipTracking API delivers real-time terrestrial-AIS maritime data over REST. It exposes live vessel positions and voyage data, static vessel particulars, vessels within a geographic zone or near a reference ship, historical tracks, port details, port calls, and estimated arrivals, plus fleet management. Every response is returned in a standardized envelope (status, duration, timestamp, and either data on success or code/message on error), in JSON by default or XML via the Accept header.\n\nAuthentication: pass your API key as either `Authorization: Bearer YOUR_API_KEY` or the `x-api-key` header on every request.\n\nBilling: calls are metered in credits. Simple responses cost 1 credit, extended responses 3 credits, and history/port-call queries 5 credits per distinct date. No credits are charged when a request returns no results, and a single request is capped at 500 credits.\n\nScope note: the paths and parameters below for /vessel, /vessel/zone, /vessel/nearby, /vessel/track, /vessel/search, /port, /port/estimate, /port/calls, and /account/info were confirmed from MyShipTracking's own per-endpoint documentation. The /vessel/bulk path is inferred from the Bulk Vessel Retrieval documentation and should be verified. Response schemas are modeled from the documented field lists; additional Fleet, Port Search, and Vessels In Port endpoints exist in the API but are not modeled here.\n\nContact Support:\n Name: MyShipTracking",
+      "type": "text/plain"
+    }
+  }
+}

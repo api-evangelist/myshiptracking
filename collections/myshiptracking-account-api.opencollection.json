@@ -1,0 +1,35 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "MyShipTracking Account API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Account info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/account/info"
+          },
+          "docs": "Retrieve account details and credit balance. No credits are charged for this endpoint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

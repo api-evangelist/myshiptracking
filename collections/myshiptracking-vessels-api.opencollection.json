@@ -1,0 +1,225 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "MyShipTracking Account Vessels API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Vessels",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Vessel status (single)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/vessel",
+            "params": [
+              {
+                "name": "mmsi",
+                "value": "",
+                "type": "query",
+                "description": "9-digit Maritime Mobile Service Identity. Provide exactly one of mmsi or imo."
+              },
+              {
+                "name": "imo",
+                "value": "",
+                "type": "query",
+                "description": "7-digit International Maritime Organization number. Provide exactly one of mmsi or imo."
+              },
+              {
+                "name": "response",
+                "value": "",
+                "type": "query",
+                "description": "Response detail level."
+              }
+            ]
+          },
+          "docs": "Retrieve the latest AIS position and voyage details for a single vessel. Exactly one of mmsi or imo is required. Simple response costs 1 credit; extended costs 3 credits."
+        },
+        {
+          "info": {
+            "name": "Vessels status (bulk)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/vessel/bulk",
+            "params": [
+              {
+                "name": "mmsi",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of MMSI identifiers (modeled)."
+              },
+              {
+                "name": "response",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve status for multiple vessels in a single request. NOTE - path and parameters are modeled from the Bulk Vessel Retrieval documentation and should be verified against the live docs."
+        },
+        {
+          "info": {
+            "name": "Vessels in zone (bounding box)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/vessel/zone",
+            "params": [
+              {
+                "name": "minlon",
+                "value": "",
+                "type": "query",
+                "description": "Minimum longitude in decimal degrees."
+              },
+              {
+                "name": "maxlon",
+                "value": "",
+                "type": "query",
+                "description": "Maximum longitude in decimal degrees."
+              },
+              {
+                "name": "minlat",
+                "value": "",
+                "type": "query",
+                "description": "Minimum latitude in decimal degrees."
+              },
+              {
+                "name": "maxlat",
+                "value": "",
+                "type": "query",
+                "description": "Maximum latitude in decimal degrees."
+              },
+              {
+                "name": "response",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "minutesBack",
+                "value": "",
+                "type": "query",
+                "description": "Maximum age of a vessel position in minutes."
+              }
+            ]
+          },
+          "docs": "List vessels within a geographic bounding box. Charged 1 credit per vessel (simple) or 3 credits per vessel (extended)."
+        },
+        {
+          "info": {
+            "name": "Vessels nearby",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/vessel/nearby",
+            "params": [
+              {
+                "name": "mmsi",
+                "value": "",
+                "type": "query",
+                "description": "9-digit MMSI of the reference vessel."
+              },
+              {
+                "name": "radius",
+                "value": "",
+                "type": "query",
+                "description": "Search radius in nautical miles (1-100)."
+              },
+              {
+                "name": "response",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List vessels within a nautical-mile radius of a reference vessel. The reference vessel's latest position must be no older than 6 hours. Up to 500 records. Charged 1 credit per vessel (simple) or 3 (extended)."
+        },
+        {
+          "info": {
+            "name": "Vessel history track",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/vessel/track",
+            "params": [
+              {
+                "name": "mmsi",
+                "value": "",
+                "type": "query",
+                "description": "9-digit MMSI. Provide exactly one of mmsi or imo."
+              },
+              {
+                "name": "imo",
+                "value": "",
+                "type": "query",
+                "description": "7-digit IMO. Provide exactly one of mmsi or imo."
+              },
+              {
+                "name": "fromdate",
+                "value": "",
+                "type": "query",
+                "description": "Start datetime in UTC (ISO 8601). Use with todate, or use days instead."
+              },
+              {
+                "name": "todate",
+                "value": "",
+                "type": "query",
+                "description": "End datetime in UTC (ISO 8601). Use with fromdate, or use days instead."
+              },
+              {
+                "name": "days",
+                "value": "",
+                "type": "query",
+                "description": "Number of days to look back. Use instead of fromdate/todate."
+              },
+              {
+                "name": "timegroup",
+                "value": "",
+                "type": "query",
+                "description": "Time aggregation in minutes (1-60)."
+              }
+            ]
+          },
+          "docs": "Retrieve historical position records for a vessel over a date range or a lookback in days, with optional time grouping. Charged 5 credits per distinct date returned. Max 90-day range; data available up to 2 years back."
+        },
+        {
+          "info": {
+            "name": "Vessel search by name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.myshiptracking.com/api/v2/vessel/search",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Search term for vessel names (minimum 3 characters)."
+              }
+            ]
+          },
+          "docs": "Search for vessels by name (minimum 3 characters). Returns up to 40 records. 1 credit per request."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
