@@ -45,6 +45,13 @@ components:
             example: MST_ERR_VALIDATOR
           message:
             type: string
+    AccountEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/Account'
     EnvelopeMeta:
       type: object
       properties:
@@ -58,13 +65,6 @@ components:
           type: string
           format: date-time
           description: ISO 8601 server timestamp.
-    AccountEnvelope:
-      allOf:
-      - $ref: '#/components/schemas/EnvelopeMeta'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/Account'
     Account:
       type: object
       properties:

@@ -159,6 +159,76 @@ components:
             example: MST_ERR_VALIDATOR
           message:
             type: string
+    PortCall:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - ARRIVAL
+          - DEPARTURE
+        time_utc:
+          type: string
+          format: date-time
+        time_local:
+          type: string
+          format: date-time
+        mmsi:
+          type: integer
+        imo:
+          type: integer
+        vessel_name:
+          type: string
+        port_id:
+          type: integer
+        port_name:
+          type: string
+        unloco:
+          type: string
+    Port:
+      type: object
+      properties:
+        port_id:
+          type: integer
+        name:
+          type: string
+        unloco:
+          type: string
+        port_type:
+          type: string
+        country:
+          type: string
+        timezone:
+          type: string
+    PortEstimateEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/PortEstimate'
+    PortEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/Port'
+    EnvelopeMeta:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        duration:
+          type: string
+          description: Processing time.
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 server timestamp.
     PortEstimate:
       type: object
       properties:
@@ -190,67 +260,6 @@ components:
         eta_local:
           type: string
           format: date-time
-    EnvelopeMeta:
-      type: object
-      properties:
-        status:
-          type: string
-          example: success
-        duration:
-          type: string
-          description: Processing time.
-        timestamp:
-          type: string
-          format: date-time
-          description: ISO 8601 server timestamp.
-    PortCall:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - ARRIVAL
-          - DEPARTURE
-        time_utc:
-          type: string
-          format: date-time
-        time_local:
-          type: string
-          format: date-time
-        mmsi:
-          type: integer
-        imo:
-          type: integer
-        vessel_name:
-          type: string
-        port_id:
-          type: integer
-        port_name:
-          type: string
-        unloco:
-          type: string
-    PortEnvelope:
-      allOf:
-      - $ref: '#/components/schemas/EnvelopeMeta'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/Port'
-    Port:
-      type: object
-      properties:
-        port_id:
-          type: integer
-        name:
-          type: string
-        unloco:
-          type: string
-        port_type:
-          type: string
-        country:
-          type: string
-        timezone:
-          type: string
     PortCallsEnvelope:
       allOf:
       - $ref: '#/components/schemas/EnvelopeMeta'
@@ -260,15 +269,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/PortCall'
-    PortEstimateEnvelope:
-      allOf:
-      - $ref: '#/components/schemas/EnvelopeMeta'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/PortEstimate'
   responses:
     BadRequest:
       description: Parameter validation failed or an invalid identifier was supplied.

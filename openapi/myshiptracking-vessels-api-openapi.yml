@@ -274,6 +274,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    VesselEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/VesselExtended'
     VesselSimple:
       type: object
       description: Simple vessel record.
@@ -309,22 +316,6 @@ components:
             example: MST_ERR_VALIDATOR
           message:
             type: string
-    TrackEnvelope:
-      allOf:
-      - $ref: '#/components/schemas/EnvelopeMeta'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/TrackPoint'
-    VesselEnvelope:
-      allOf:
-      - $ref: '#/components/schemas/EnvelopeMeta'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/VesselExtended'
     TrackPoint:
       type: object
       properties:
@@ -339,19 +330,6 @@ components:
         time:
           type: string
           format: date-time
-    EnvelopeMeta:
-      type: object
-      properties:
-        status:
-          type: string
-          example: success
-        duration:
-          type: string
-          description: Processing time.
-        timestamp:
-          type: string
-          format: date-time
-          description: ISO 8601 server timestamp.
     VesselExtended:
       description: Extended vessel record adds static particulars, voyage, and weather fields to the simple record. Field list is modeled from the documented extended response.
       allOf:
@@ -387,6 +365,45 @@ components:
           eta:
             type: string
             format: date-time
+    VesselSearchResult:
+      type: object
+      properties:
+        vessel_name:
+          type: string
+        mmsi:
+          type: integer
+        imo:
+          type: integer
+        vtype:
+          type: integer
+        vessel_type:
+          type: string
+        flag:
+          type: string
+        area:
+          type: string
+    TrackEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/TrackPoint'
+    EnvelopeMeta:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        duration:
+          type: string
+          description: Processing time.
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 server timestamp.
     VesselListEnvelope:
       allOf:
       - $ref: '#/components/schemas/EnvelopeMeta'
@@ -406,23 +423,6 @@ components:
             maxItems: 40
             items:
               $ref: '#/components/schemas/VesselSearchResult'
-    VesselSearchResult:
-      type: object
-      properties:
-        vessel_name:
-          type: string
-        mmsi:
-          type: integer
-        imo:
-          type: integer
-        vtype:
-          type: integer
-        vessel_type:
-          type: string
-        flag:
-          type: string
-        area:
-          type: string
   responses:
     BadRequest:
       description: Parameter validation failed or an invalid identifier was supplied.
