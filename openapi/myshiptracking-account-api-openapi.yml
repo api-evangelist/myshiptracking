@@ -34,17 +34,14 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
-    ErrorEnvelope:
-      allOf:
-      - $ref: '#/components/schemas/EnvelopeMeta'
-      - type: object
-        properties:
-          code:
-            type: string
-            example: MST_ERR_VALIDATOR
-          message:
-            type: string
     AccountEnvelope:
       allOf:
       - $ref: '#/components/schemas/EnvelopeMeta'
@@ -52,19 +49,6 @@ components:
         properties:
           data:
             $ref: '#/components/schemas/Account'
-    EnvelopeMeta:
-      type: object
-      properties:
-        status:
-          type: string
-          example: success
-        duration:
-          type: string
-          description: Processing time.
-        timestamp:
-          type: string
-          format: date-time
-          description: ISO 8601 server timestamp.
     Account:
       type: object
       properties:
@@ -83,13 +67,29 @@ components:
           format: date-time
         is_trial:
           type: boolean
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+    ErrorEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          code:
+            type: string
+            example: MST_ERR_VALIDATOR
+          message:
+            type: string
+    EnvelopeMeta:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        duration:
+          type: string
+          description: Processing time.
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 server timestamp.
   securitySchemes:
     bearerAuth:
       type: http

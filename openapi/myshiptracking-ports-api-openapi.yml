@@ -149,42 +149,15 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    ErrorEnvelope:
+    PortEstimateEnvelope:
       allOf:
       - $ref: '#/components/schemas/EnvelopeMeta'
       - type: object
         properties:
-          code:
-            type: string
-            example: MST_ERR_VALIDATOR
-          message:
-            type: string
-    PortCall:
-      type: object
-      properties:
-        event:
-          type: string
-          enum:
-          - ARRIVAL
-          - DEPARTURE
-        time_utc:
-          type: string
-          format: date-time
-        time_local:
-          type: string
-          format: date-time
-        mmsi:
-          type: integer
-        imo:
-          type: integer
-        vessel_name:
-          type: string
-        port_id:
-          type: integer
-        port_name:
-          type: string
-        unloco:
-          type: string
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/PortEstimate'
     Port:
       type: object
       properties:
@@ -200,7 +173,17 @@ components:
           type: string
         timezone:
           type: string
-    PortEstimateEnvelope:
+    ErrorEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          code:
+            type: string
+            example: MST_ERR_VALIDATOR
+          message:
+            type: string
+    PortCallsEnvelope:
       allOf:
       - $ref: '#/components/schemas/EnvelopeMeta'
       - type: object
@@ -208,7 +191,7 @@ components:
           data:
             type: array
             items:
-              $ref: '#/components/schemas/PortEstimate'
+              $ref: '#/components/schemas/PortCall'
     PortEnvelope:
       allOf:
       - $ref: '#/components/schemas/EnvelopeMeta'
@@ -216,19 +199,6 @@ components:
         properties:
           data:
             $ref: '#/components/schemas/Port'
-    EnvelopeMeta:
-      type: object
-      properties:
-        status:
-          type: string
-          example: success
-        duration:
-          type: string
-          description: Processing time.
-        timestamp:
-          type: string
-          format: date-time
-          description: ISO 8601 server timestamp.
     PortEstimate:
       type: object
       properties:
@@ -260,24 +230,54 @@ components:
         eta_local:
           type: string
           format: date-time
-    PortCallsEnvelope:
-      allOf:
-      - $ref: '#/components/schemas/EnvelopeMeta'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/PortCall'
+    PortCall:
+      type: object
+      properties:
+        event:
+          type: string
+          enum:
+          - ARRIVAL
+          - DEPARTURE
+        time_utc:
+          type: string
+          format: date-time
+        time_local:
+          type: string
+          format: date-time
+        mmsi:
+          type: integer
+        imo:
+          type: integer
+        vessel_name:
+          type: string
+        port_id:
+          type: integer
+        port_name:
+          type: string
+        unloco:
+          type: string
+    EnvelopeMeta:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        duration:
+          type: string
+          description: Processing time.
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 server timestamp.
   responses:
-    BadRequest:
-      description: Parameter validation failed or an invalid identifier was supplied.
+    Unauthorized:
+      description: Missing or invalid API key.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Missing or invalid API key.
+    BadRequest:
+      description: Parameter validation failed or an invalid identifier was supplied.
       content:
         application/json:
           schema:
