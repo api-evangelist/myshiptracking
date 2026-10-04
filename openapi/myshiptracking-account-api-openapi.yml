@@ -34,13 +34,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
     AccountEnvelope:
       allOf:
@@ -49,6 +42,16 @@ components:
         properties:
           data:
             $ref: '#/components/schemas/Account'
+    ErrorEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          code:
+            type: string
+            example: MST_ERR_VALIDATOR
+          message:
+            type: string
     Account:
       type: object
       properties:
@@ -67,16 +70,6 @@ components:
           format: date-time
         is_trial:
           type: boolean
-    ErrorEnvelope:
-      allOf:
-      - $ref: '#/components/schemas/EnvelopeMeta'
-      - type: object
-        properties:
-          code:
-            type: string
-            example: MST_ERR_VALIDATOR
-          message:
-            type: string
     EnvelopeMeta:
       type: object
       properties:
@@ -90,6 +83,13 @@ components:
           type: string
           format: date-time
           description: ISO 8601 server timestamp.
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   securitySchemes:
     bearerAuth:
       type: http

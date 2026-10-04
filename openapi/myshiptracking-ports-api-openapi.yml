@@ -148,8 +148,21 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    BadRequest:
+      description: Parameter validation failed or an invalid identifier was supplied.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
-    PortEstimateEnvelope:
+    PortCallsEnvelope:
       allOf:
       - $ref: '#/components/schemas/EnvelopeMeta'
       - type: object
@@ -157,22 +170,7 @@ components:
           data:
             type: array
             items:
-              $ref: '#/components/schemas/PortEstimate'
-    Port:
-      type: object
-      properties:
-        port_id:
-          type: integer
-        name:
-          type: string
-        unloco:
-          type: string
-        port_type:
-          type: string
-        country:
-          type: string
-        timezone:
-          type: string
+              $ref: '#/components/schemas/PortCall'
     ErrorEnvelope:
       allOf:
       - $ref: '#/components/schemas/EnvelopeMeta'
@@ -183,22 +181,6 @@ components:
             example: MST_ERR_VALIDATOR
           message:
             type: string
-    PortCallsEnvelope:
-      allOf:
-      - $ref: '#/components/schemas/EnvelopeMeta'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/PortCall'
-    PortEnvelope:
-      allOf:
-      - $ref: '#/components/schemas/EnvelopeMeta'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/Port'
     PortEstimate:
       type: object
       properties:
@@ -230,6 +212,50 @@ components:
         eta_local:
           type: string
           format: date-time
+    Port:
+      type: object
+      properties:
+        port_id:
+          type: integer
+        name:
+          type: string
+        unloco:
+          type: string
+        port_type:
+          type: string
+        country:
+          type: string
+        timezone:
+          type: string
+    EnvelopeMeta:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        duration:
+          type: string
+          description: Processing time.
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 server timestamp.
+    PortEstimateEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/PortEstimate'
+    PortEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/Port'
     PortCall:
       type: object
       properties:
@@ -256,32 +282,6 @@ components:
           type: string
         unloco:
           type: string
-    EnvelopeMeta:
-      type: object
-      properties:
-        status:
-          type: string
-          example: success
-        duration:
-          type: string
-          description: Processing time.
-        timestamp:
-          type: string
-          format: date-time
-          description: ISO 8601 server timestamp.
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Parameter validation failed or an invalid identifier was supplied.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
   securitySchemes:
     bearerAuth:
       type: http

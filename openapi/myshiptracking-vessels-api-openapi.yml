@@ -273,9 +273,30 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    BadRequest:
+      description: Parameter validation failed or an invalid identifier was supplied.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
-    VesselSearchResult:
+    VesselEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/VesselExtended'
+    VesselSimple:
       type: object
+      description: Simple vessel record.
       properties:
         vessel_name:
           type: string
@@ -285,21 +306,43 @@ components:
           type: integer
         vtype:
           type: integer
-        vessel_type:
+        lat:
+          type: number
+        lng:
+          type: number
+        course:
+          type: number
+        speed:
+          type: number
+        nav_status:
           type: string
-        flag:
+        received:
           type: string
-        area:
+          format: date-time
+    TrackPoint:
+      type: object
+      properties:
+        lat:
+          type: number
+        lng:
+          type: number
+        course:
+          type: number
+        speed:
+          type: number
+        time:
           type: string
-    VesselListEnvelope:
+          format: date-time
+    ErrorEnvelope:
       allOf:
       - $ref: '#/components/schemas/EnvelopeMeta'
       - type: object
         properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/VesselExtended'
+          code:
+            type: string
+            example: MST_ERR_VALIDATOR
+          message:
+            type: string
     VesselExtended:
       description: Extended vessel record adds static particulars, voyage, and weather fields to the simple record. Field list is modeled from the documented extended response.
       allOf:
@@ -335,81 +378,6 @@ components:
           eta:
             type: string
             format: date-time
-    VesselEnvelope:
-      allOf:
-      - $ref: '#/components/schemas/EnvelopeMeta'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/VesselExtended'
-    TrackPoint:
-      type: object
-      properties:
-        lat:
-          type: number
-        lng:
-          type: number
-        course:
-          type: number
-        speed:
-          type: number
-        time:
-          type: string
-          format: date-time
-    ErrorEnvelope:
-      allOf:
-      - $ref: '#/components/schemas/EnvelopeMeta'
-      - type: object
-        properties:
-          code:
-            type: string
-            example: MST_ERR_VALIDATOR
-          message:
-            type: string
-    TrackEnvelope:
-      allOf:
-      - $ref: '#/components/schemas/EnvelopeMeta'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/TrackPoint'
-    VesselSearchEnvelope:
-      allOf:
-      - $ref: '#/components/schemas/EnvelopeMeta'
-      - type: object
-        properties:
-          data:
-            type: array
-            maxItems: 40
-            items:
-              $ref: '#/components/schemas/VesselSearchResult'
-    VesselSimple:
-      type: object
-      description: Simple vessel record.
-      properties:
-        vessel_name:
-          type: string
-        mmsi:
-          type: integer
-        imo:
-          type: integer
-        vtype:
-          type: integer
-        lat:
-          type: number
-        lng:
-          type: number
-        course:
-          type: number
-        speed:
-          type: number
-        nav_status:
-          type: string
-        received:
-          type: string
-          format: date-time
     EnvelopeMeta:
       type: object
       properties:
@@ -423,19 +391,51 @@ components:
           type: string
           format: date-time
           description: ISO 8601 server timestamp.
-  responses:
-    Unauthorized:
-      description: Missing or invalid API key.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Parameter validation failed or an invalid identifier was supplied.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+    VesselSearchEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            type: array
+            maxItems: 40
+            items:
+              $ref: '#/components/schemas/VesselSearchResult'
+    TrackEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/TrackPoint'
+    VesselListEnvelope:
+      allOf:
+      - $ref: '#/components/schemas/EnvelopeMeta'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/VesselExtended'
+    VesselSearchResult:
+      type: object
+      properties:
+        vessel_name:
+          type: string
+        mmsi:
+          type: integer
+        imo:
+          type: integer
+        vtype:
+          type: integer
+        vessel_type:
+          type: string
+        flag:
+          type: string
+        area:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http
