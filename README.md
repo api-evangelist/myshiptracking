@@ -1,4 +1,4 @@
-# MyShipTracking (myshiptracking)
+# MyShipTracking
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,177 +64,120 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-MyShipTracking is a real-time terrestrial AIS vessel-tracking platform. Its REST API delivers live vessel positions, voyage and static particulars, vessels within a geographic zone or near a reference ship, historical tracks, port details, port calls, estimated arrivals, and fleet management - all returned in a standardized JSON or XML envelope.
+MyShipTracking is a real-time terrestrial AIS vessel-tracking platform. Its REST API delivers live vessel positions, voyage and static particulars, vessels within a geographic zone or near a reference ship, historical tracks, port details, port calls, estimated arrivals, and fleet management - all returned in a standardized JSON or XML envelope. Access is credit-metered under monthly subscription plans or a pay-per-use coin model, authenticated with an API key over Bearer or x-api-key.
 
-## Access Model (Read First)
+**Areas:** Vessel Tracking · AIS · Maritime · Ship Tracking · Real-Time Data · Ships · Port Calls · Maritime Data · Location · Fleet Tracking
 
-This is a **paid, credit-metered API**. There is no free-forever tier - only a limited free trial.
+## MyShipTracking on APIs.io
 
-- **Authentication is required on every call.** Register at MyShipTracking.com, generate an API Key and Secret Key on your account page, and pass the key as either `Authorization: Bearer YOUR_API_KEY` or the `x-api-key` header.
-- **Credit-based billing.** Every successful call deducts credits based on the endpoint and response detail. Simple responses cost 1 credit; extended responses cost 3 credits; history and port-call queries cost 5 credits per distinct date. No credits are charged when a request returns no results.
-- **Per-request cap.** You are never charged more than 500 credits for a single request, and never more than your available balance (overuse protection).
-- **Two account models.** A pay-per-use "Coin Charge" model, or a monthly "Subscription" with a fixed monthly credit allowance. Subscription credits do not roll over month to month.
-- **Free trial.** One trial API key per user, limited to 2,000 coins and a maximum active period of 10 days, capped at 90 calls per minute.
-- **Terrestrial AIS only.** Coverage is nearshore; vessels can be out of range for extended periods and historical tracks may be incomplete. Verify coverage against your use case during the trial.
+Everything profiled for MyShipTracking is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/myshiptracking/](https://apis.io/providers/myshiptracking/)** — or go straight to one of the APIs or properties below.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/myshiptracking/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/myshiptracking/refs/heads/main/apis.yml)
+### APIs (3)
 
-## Tags
+- [MyShipTracking Account API](https://apis.io/apis/myshiptracking/myshiptracking-account-api/) — Account details and credit balance.
+- [MyShipTracking Ports API](https://apis.io/apis/myshiptracking/myshiptracking-ports-api/) — Port details, port calls, and arrival estimates.
+- [MyShipTracking Vessels API](https://apis.io/apis/myshiptracking/myshiptracking-vessels-api/) — Vessel positions, particulars, history, and search.
 
-- Vessel Tracking
-- AIS
-- Maritime
-- Ship Tracking
-- Real-Time Data
-- Ships
-- Port Calls
-- Maritime Data
-- Location
-- Fleet Tracking
+### Published properties
 
-## Timestamps
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-- **Created:** 2026-07-12
-- **Modified:** 2026-07-12
+#### Agentic access (1)
 
-## APIs
+Which operations an agent can call, which act, and which need a human in the loop.
 
-### MyShipTracking Vessel Position API
+- [Myshiptracking Agentic Access](https://apis.io/agentic-access/myshiptracking/myshiptracking-agentic-access/)
 
-Retrieve the latest AIS position and voyage details for a specific vessel by MMSI or IMO (`GET /vessel`), or for many vessels in one request (`GET /vessel/bulk`). Simple responses return position, course, speed, and navigation status; extended responses add static particulars and voyage data.
+#### Collections (4)
 
-- **Human URL:** [https://api.myshiptracking.com/docs/vessel-current-position-api](https://api.myshiptracking.com/docs/vessel-current-position-api)
-- **Base URL:** `https://api.myshiptracking.com/api/v2`
+Postman and Open Collection request collections.
 
-#### Tags
+- [MyShipTracking API](https://apis.io/collections/myshiptracking/open-myshiptracking/)
+- [MyShipTracking Account API](https://apis.io/collections/myshiptracking/open-myshiptracking-account-api/)
+- [MyShipTracking Account Ports API](https://apis.io/collections/myshiptracking/open-myshiptracking-ports-api/)
+- [MyShipTracking Account Vessels API](https://apis.io/collections/myshiptracking/open-myshiptracking-vessels-api/)
 
-- Vessel Position
-- AIS
-- Real-Time Data
+#### Security (2)
 
-#### Properties
+Authentication, trust centre, and vulnerability disclosure.
 
-- [Documentation](https://api.myshiptracking.com/docs/vessel-current-position-api)
-- [API Reference](https://api.myshiptracking.com/docs/vessels-current-position-api)
-- [OpenAPI](openapi/myshiptracking-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/myshiptracking.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/myshiptracking.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Myshiptracking Authentication](https://apis.io/security/myshiptracking/myshiptracking-authentication/)
+- [Myshiptracking Domain Security](https://apis.io/security/myshiptracking/myshiptracking-domain-security/)
 
-### MyShipTracking Vessels in Area API
+#### Plans and pricing (1)
 
-List vessels inside a geographic bounding box (`GET /vessel/zone` with minlon/maxlon/minlat/maxlat) or within a nautical-mile radius of a reference vessel (`GET /vessel/nearby`). Credits are charged per vessel returned, one for simple and three for extended responses.
+Published plans, tiers and prices.
 
-- **Human URL:** [https://api.myshiptracking.com/docs/vessels-in-zone](https://api.myshiptracking.com/docs/vessels-in-zone)
-- **Base URL:** `https://api.myshiptracking.com/api/v2`
+- [Myshiptracking Plans Pricing](https://apis.io/plans/myshiptracking/myshiptracking-plans-pricing/)
 
-#### Tags
+#### Rate limits (1)
 
-- Vessels In Zone
-- Bounding Box
-- Nearby
+Published request limits.
 
-#### Properties
+- [Myshiptracking Rate Limits](https://apis.io/rate-limits/myshiptracking/myshiptracking-rate-limits/)
 
-- [Documentation](https://api.myshiptracking.com/docs/vessels-in-zone)
-- [API Reference](https://api.myshiptracking.com/docs/vessels-nearby)
-- [OpenAPI](openapi/myshiptracking-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/myshiptracking.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/myshiptracking.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### FinOps (1)
 
-### MyShipTracking Vessel Search API
+What the API costs to run, by operation.
 
-Search for vessels by name (`GET /vessel/search`, minimum three characters, up to 40 records). Returns vessel name, MMSI, IMO, type code and label, flag, and last-detected area. One credit per request.
+- [Myshiptracking Finops](https://apis.io/finops/myshiptracking/myshiptracking-finops/)
 
-- **Human URL:** [https://api.myshiptracking.com/docs/vessel-search](https://api.myshiptracking.com/docs/vessel-search)
-- **Base URL:** `https://api.myshiptracking.com/api/v2`
+## Where to find this API
 
-#### Tags
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-- Vessel Search
-- Lookup
-- Ships
-
-#### Properties
-
-- [Documentation](https://api.myshiptracking.com/docs/vessel-search)
-- [OpenAPI](openapi/myshiptracking-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/myshiptracking.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/myshiptracking.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### MyShipTracking Vessel Particulars API
-
-Static vessel particulars - callsign, vessel type, AIS type, dimensions, draught, flag, gross tonnage, deadweight, and year built - are returned by the extended response of the Vessel Status endpoint. Historical movement is available via `GET /vessel/track` over a date range with configurable time grouping.
-
-- **Human URL:** [https://api.myshiptracking.com/docs/vessel-current-position-api](https://api.myshiptracking.com/docs/vessel-current-position-api)
-- **Base URL:** `https://api.myshiptracking.com/api/v2`
-
-#### Tags
-
-- Vessel Particulars
-- Static Data
-- History Track
-
-#### Properties
-
-- [Documentation](https://api.myshiptracking.com/docs/vessel-current-position-api)
-- [API Reference](https://api.myshiptracking.com/docs/vessel-historical-track-api)
-- [OpenAPI](openapi/myshiptracking-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/myshiptracking.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/myshiptracking.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### MyShipTracking Port Calls API
-
-Retrieve historical port call events - arrivals and departures - for a port (by port_id or UN/LOCODE) or a vessel (by MMSI) over a lookback window or date range (`GET /port/calls`). Port metadata is available via `GET /port`. Charged five credits per distinct date in the returned records.
-
-- **Human URL:** [https://api.myshiptracking.com/docs/port-calls](https://api.myshiptracking.com/docs/port-calls)
-- **Base URL:** `https://api.myshiptracking.com/api/v2`
-
-#### Tags
-
-- Port Calls
-- Arrivals
-- Departures
-
-#### Properties
-
-- [Documentation](https://api.myshiptracking.com/docs/port-calls)
-- [API Reference](https://api.myshiptracking.com/docs/port-details)
-- [OpenAPI](openapi/myshiptracking-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/myshiptracking.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/myshiptracking.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### MyShipTracking ETA API
-
-Obtain estimated arrival times for vessels heading to a given port (`GET /port/estimate` by port_id or UN/LOCODE). Each record includes vessel identity and particulars plus `eta_utc` and `eta_local`. One credit per record returned.
-
-- **Human URL:** [https://api.myshiptracking.com/docs/port-estimate-arrivals](https://api.myshiptracking.com/docs/port-estimate-arrivals)
-- **Base URL:** `https://api.myshiptracking.com/api/v2`
-
-#### Tags
-
-- ETA
-- Expected Arrivals
-- Port Estimate
-
-#### Properties
-
-- [Documentation](https://api.myshiptracking.com/docs/port-estimate-arrivals)
-- [OpenAPI](openapi/myshiptracking-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/myshiptracking.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/myshiptracking.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [Domain Security](security/myshiptracking-domain-security.yml)
-- [Authentication](authentication/myshiptracking-authentication.yml)
 - [Website](https://www.myshiptracking.com)
 - [Documentation](https://api.myshiptracking.com/)
-- [Plans](plans/myshiptracking-plans-pricing.yml)
-- [Rate Limits](rate-limits/myshiptracking-rate-limits.yml)
-- [Fin Ops](finops/myshiptracking-finops.yml)
-- [LinkedIn](https://www.linkedin.com/company/myshiptracking)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 23.3** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 34.3 |
+| Contract governance | 0.0 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 29.8 |
+| Access clarity | 7.9 |
+
+**Agent readiness 20.7** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | na |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | na |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | na |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 11.8** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/myshiptracking/](https://apis.io/providers/myshiptracking/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for MyShipTracking: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/myshiptracking/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
